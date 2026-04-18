@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فاتورة صومر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum:      #2d1223;
+    --plum-soft: #3d1a30;
+    --gold:      #bc9248;
+    --gold-dim:  rgba(188,146,72,0.15);
+    --silver:    #c1c0be;
+    --silver-dim: rgba(193,192,190,0.18);
+    --off-white: #faf9f7;
+    --page-bg:   #EDEAE4;
+    --text:      #2a2a2a;
+    --line:      #EBE5DC;
+    --field-line: #E2DDD5;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--page-bg);
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+  }
+
+  .page { width: 100%; max-width: 680px; }
+
+  .card {
+    background: #fff;
+    box-shadow: 0 28px 80px rgba(45,18,35,0.14), 0 2px 10px rgba(45,18,35,0.05);
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .hdr {
+    background: var(--plum);
+    padding: 42px 52px 34px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hdr::before {
+    content: '';
+    position: absolute;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    border: 1px solid rgba(188,146,72,0.09);
+    top: -160px; left: -100px;
+    pointer-events: none;
+  }
+  .hdr::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(188,146,72,0.06);
+    bottom: -70px; right: -50px;
+    pointer-events: none;
+  }
+
+  .hdr-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 26px;
+  }
+
+  .brand-ar {
+    font-family: 'Cairo', sans-serif;
+    font-size: 60px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: -1px;
+    line-height: 1;
+    display: block;
+  }
+
+  .brand-en {
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    color: var(--silver);
+    opacity: 0.7;
+    text-transform: uppercase;
+    margin-top: 3px;
+    display: block;
+  }
+
+  .inv-tag { text-align: left; position: relative; z-index: 1; }
+
+  .inv-tag-lbl {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--silver);
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .inv-tag-num {
+    font-family: 'Cairo', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: #fff;
+    direction: ltr;
+    display: block;
+  }
+
+  /* gold rule */
+  .gold-rule {
+    position: relative;
+    z-index: 1;
+    height: 1px;
+    background: linear-gradient(to left, transparent, rgba(188,146,72,0.45) 55%, transparent);
+    margin-bottom: 22px;
+  }
+
+  /* welcome */
+  .welcome { position: relative; z-index: 1; }
+
+  .welcome-tag {
+    font-family: 'Cairo', sans-serif;
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 9px;
+    letter-spacing: 0.2px;
+  }
+
+  .welcome-body {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 2;
+    max-width: 510px;
+  }
+
+  .welcome-body em {
+    font-style: normal;
+    color: #dcc99a;
+    font-weight: 500;
+  }
+
+  /* ── GOLD BAND ── */
+  .band {
+    background: var(--gold);
+    padding: 11px 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .band-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--plum);
+  }
+
+  .band-track {
+    margin-right: auto;
+    font-size: 10.5px;
+    color: rgba(45,18,35,0.5);
+    font-weight: 500;
+  }
+
+  /* ── BODY ── */
+  .body { padding: 36px 52px; }
+
+  .sec-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .grid-1 { margin-bottom: 32px; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--silver);
+    text-transform: uppercase;
+  }
+
+  .field input {
+    border: none;
+    border-bottom: 1.5px solid var(--field-line);
+    padding: 8px 0;
+    font-size: 13.5px;
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text);
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field input:focus { border-bottom-color: var(--gold); }
+  .field input::placeholder { color: #CCC8C0; font-size: 12.5px; }
+
+  /* ── ORDER TABLE ── */
+  .order-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 28px;
+  }
+
+  .order-tbl thead tr { border-bottom: 2px solid var(--plum); }
+
+  .order-tbl th {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--plum);
+    padding: 0 0 10px;
+    text-align: right;
+  }
+
+  .order-tbl td {
+    padding: 13px 0;
+    font-size: 13.5px;
+    color: #333;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+
+  .qty-box {
+    border: 1.5px solid var(--field-line);
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    width: 72px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--plum);
+    font-weight: 600;
+  }
+
+  .qty-box:focus { border-color: var(--gold); }
+
+  .note-in {
+    border: none;
+    border-bottom: 1px dashed #DDD;
+    outline: none;
+    width: 100%;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12.5px;
+    background: transparent;
+    color: #666;
+    padding: 4px 0;
+  }
+
+  /* ── TOTALS ── */
+  .totals {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .t-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--off-white);
+  }
+
+  .t-row:last-child { border-bottom: none; }
+
+  .t-row .lbl { font-size: 12.5px; color: #777; }
+
+  .t-row .val {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    direction: ltr;
+  }
+
+  .price-in {
+    border: none;
+    border-bottom: 1.5px dashed var(--gold);
+    padding: 3px 4px;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    color: var(--text);
+    background: transparent;
+    outline: none;
+    width: 100px;
+    text-align: right;
+    font-weight: 600;
+    direction: ltr;
+  }
+
+  .price-in:focus { border-bottom-color: var(--plum); }
+
+  .curr { font-size: 11px; color: #aaa; }
+
+  /* remaining */
+  .t-row.rem-row {
+    background: var(--plum);
+    padding: 17px 22px;
+    border-bottom: none;
+  }
+
+  .t-row.rem-row .lbl {
+    color: var(--silver);
+    font-size: 10.5px;
+    letter-spacing: 1px;
+  }
+
+  .t-row.rem-row .curr { color: rgba(188,146,72,0.45); font-size: 12px; }
+
+  .rem-val {
+    font-family: 'Cairo', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--gold);
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    direction: ltr;
+    width: 130px;
+  }
+
+  /* ── FOOTER ── */
+  .ftr {
+    background: var(--off-white);
+    border-top: 1px solid var(--line);
+    padding: 18px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ftr-brand {
+    font-family: 'Cairo', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--plum);
+  }
+
+  .ftr-tagline {
+    font-size: 10px;
+    color: var(--silver);
+    letter-spacing: 1.5px;
+    margin-top: 1px;
+    display: block;
+  }
+
+  .ftr-info {
+    text-align: left;
+    font-size: 11px;
+    color: var(--silver);
+    line-height: 1.8;
+  }
+
+  /* ── ACTIONS ── */
+  .actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 3px;
+    letter-spacing: 0.4px;
+    transition: all 0.18s;
+  }
+
+  .btn-main { background: var(--plum); color: var(--gold); }
+  .btn-main:hover { background: var(--plum-soft); }
+
+  .btn-ghost { background: transparent; color: var(--plum); border: 1.5px solid #C0BAB2; }
+  .btn-ghost:hover { border-color: var(--plum); }
+
+  @media print {
+    body { background:#fff; padding:0; }
+    .actions { display:none; }
+    .card { box-shadow:none; }
+  }
+
+  @media (max-width:520px) {
+    .hdr, .body, .ftr, .band { padding-inline: 22px; }
+    .brand-ar { font-size:44px; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div>
+        <span class="brand-ar">صومر</span>
+        <span class="brand-en">Somar · Fabrics &amp; Tailoring</span>
+      </div>
+      <div class="inv-tag">
+        <span class="inv-tag-lbl">رقم الفاتورة</span>
+        <span class="inv-tag-num" id="inv-num">#SM-0001</span>
+      </div>
+    </div>
+
+    <div class="gold-rule"></div>
+
+    <div class="welcome">
+      <div class="welcome-tag">الهيبة عليك عادة — شكراً لاختيارك صومر</div>
+      <div class="welcome-body">
+        في <em>صومر</em>، نؤمن أن كل تفصيل يعكس هويّتك ويُجسّد أناقتك.<br>
+        نشكر ثقتك الغالية، ويشرّفنا أن نخدمك اليوم وفي كل مناسباتك القادمة.
+        أهلاً بك دائماً — أنت في بيتك.
+      </div>
+    </div>
+  </div>
+
+  <!-- BAND -->
+  <div class="band">
+    <span style="font-size:14px">⏱</span>
+    <span class="band-text">سيتم العمل على طلبك خلال 10 – 20 يوم عمل</span>
+    <span class="band-track">تتبّع طلبك برقم الفاتورة</span>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="sec-label">بيانات العميل</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>الاسم</label>
+        <input type="text" placeholder="اسم العميل" id="c-name">
+      </div>
+      <div class="field">
+        <label>رقم الهاتف</label>
+        <input type="tel" placeholder="9XXXXXXXX" id="c-phone" dir="ltr">
+      </div>
+    </div>
+    <div class="grid-1">
+      <div class="field">
+        <label>المنطقة</label>
+        <input type="text" placeholder="المحافظة / المنطقة" id="c-region">
+      </div>
+    </div>
+
+    <div class="sec-label">تفاصيل الطلب</div>
+    <table class="order-tbl">
+      <thead>
+        <tr>
+          <th>الصنف</th>
+          <th style="text-align:center">العدد</th>
+          <th style="text-align:left">ملاحظات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>دشداشة</td>
+          <td style="text-align:center">
+            <input type="number" class="qty-box" id="qty" value="1" min="0">
+          </td>
+          <td style="text-align:left">
+            <input class="note-in" type="text" placeholder="اختياري...">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sec-label">الملخص المالي</div>
+    <div class="totals">
+      <div class="t-row">
+        <span class="lbl">مجموع السعر</span>
+        <div class="val">
+          <input type="number" class="price-in" id="total" placeholder="0.000" oninput="calc()">
+          <span class="curr">ر.ع</span>
+        </div>
+      </div>
+      <div class="t-row">
+        <span class="lbl">المبلغ المدفوع</span>
+        <div class="val">
+          <input type="number" class="price-in" id="paid" placeholder="0.000" oninput="calc()">
+          <span class="curr">ر.ع</span>
+        </div>
+      </div>
+      <div class="t-row rem-row">
+        <span class="lbl">المبلغ المتبقي</span>
+        <div class="val">
+          <input class="rem-val" id="remaining" value="0.000" readonly>
+          <span class="curr">ر.ع</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ftr">
+    <div>
+      <div class="ftr-brand">صومر</div>
+      <span class="ftr-tagline">الهيبة عليك عادة</span>
+    </div>
+    <div class="ftr-info">
+      تاريخ الفاتورة: <span id="inv-date"></span><br>
+      يسعدنا خدمتك دائماً ✦
+    </div>
+  </div>
+
+</div>
+
+<!-- ACTIONS -->
+<div class="actions">
+  <button class="btn btn-main" onclick="window.print()">🖨 طباعة الفاتورة</button>
+  <button class="btn btn-ghost" onclick="newInv()">↺ فاتورة جديدة</button>
+</div>
+</div>
+
+<script>
+  const setDate = () => {
+    document.getElementById('inv-date').textContent =
+      new Date().toLocaleDateString('ar-OM', { year:'numeric', month:'long', day:'numeric' });
+  };
+  setDate();
+
+  let n = parseInt(localStorage.getItem('somar_n') || '0') + 1;
+  const setNum = v => document.getElementById('inv-num').textContent = '#SM-' + String(v).padStart(4,'0');
+  setNum(n);
+  localStorage.setItem('somar_n', n);
+
+  function calc() {
+    const t = parseFloat(document.getElementById('total').value) || 0;
+    const p = parseFloat(document.getElementById('paid').value) || 0;
+    document.getElementById('remaining').value = (Math.max(t - p, 0)).toFixed(3);
+  }
+
+  function newInv() {
+    ['c-name','c-phone','c-region'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('qty').value = '1';
+    document.getElementById('total').value = '';
+    document.getElementById('paid').value = '';
+    document.getElementById('remaining').value = '0.000';
+    document.querySelectorAll('.note-in').forEach(i => i.value = '');
+    n = parseInt(localStorage.getItem('somar_n') || '0') + 1;
+    setNum(n);
+    localStorage.setItem('somar_n', n);
+    setDate();
+  }
+</script>
+
+</body>
